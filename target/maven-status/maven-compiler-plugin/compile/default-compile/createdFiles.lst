@@ -1,0 +1,5 @@
+com\mycompany\todolistapp\TodoUI.class
+com\mycompany\todolistapp\Category.class
+com\mycompany\todolistapp\Task.class
+com\mycompany\todolistapp\Main.class
+com\mycompany\todolistapp\TaskManager.class

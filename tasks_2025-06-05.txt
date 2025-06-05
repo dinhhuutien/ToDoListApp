@@ -1,0 +1,4 @@
+[1] do exercise | WORK | 2025-06-05 | Completed: true
+[2] do job | WORK | 2025-06-05 | Completed: false
+[3] singing | WORK | 2025-06-05 | Completed: false
+[4] dancing | HOBBY | 2025-06-05 | Completed: false
