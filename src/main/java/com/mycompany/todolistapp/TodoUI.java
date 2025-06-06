@@ -1,17 +1,9 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * File TodoUI.java - The main graphical user interface (GUI) for the To-Do List application.
+ * It allows users to add, update, delete, search, refresh, and export tasks based on their date.
  */
+
 package com.mycompany.todolistapp;
-
-/**
- *
- * @author ADMIN
- */
-/*
- * File TodoUI.java - Giao diện Swing hoàn thiện với Date Picker đẹp hơn
- */
-
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,17 +14,17 @@ import java.util.Date;
 import java.util.List;
 import java.io.*;
 
-// Import JDateChooser
+// Import JDateChooser for date selection
 import com.toedter.calendar.JDateChooser;
 
 public class TodoUI extends JFrame {
-    private final TaskManager taskManager;
-    private final JTextField descriptionField;
-    private final JComboBox<Category> categoryComboBox;
-    private final JCheckBox completedCheckBox;
-    private final JDateChooser dateChooser; // Sử dụng DateChooser thay cho JSpinner
-    private final JTextArea taskListArea;
-    private final JTextField searchField;
+    private final TaskManager taskManager; // Manages the list of tasks
+    private final JTextField descriptionField; // Field to enter the task description
+    private final JComboBox<Category> categoryComboBox; // Dropdown to select the task category
+    private final JCheckBox completedCheckBox; // Checkbox to indicate if the task is completed
+    private final JDateChooser dateChooser; // Date picker for selecting the task date
+    private final JTextArea taskListArea; // Area to display tasks
+    private final JTextField searchField; // Field to search tasks
 
     public TodoUI(TaskManager taskManager) {
         this.taskManager = taskManager;
@@ -40,7 +32,7 @@ public class TodoUI extends JFrame {
         setSize(600, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Panel nhập thông tin task
+        // Panel for inputting task information
         JPanel inputPanel = new JPanel(new GridLayout(2, 4));
         inputPanel.add(new JLabel("Description:"));
         descriptionField = new JTextField();
@@ -60,39 +52,45 @@ public class TodoUI extends JFrame {
 
         add(inputPanel, BorderLayout.NORTH);
 
-        // Khu vực hiển thị danh sách task
+        // Area to display the list of tasks
         taskListArea = new JTextArea();
         taskListArea.setEditable(false);
         add(new JScrollPane(taskListArea), BorderLayout.CENTER);
 
-        // Panel điều khiển
+        // Panel for control buttons
         JPanel controlPanel = new JPanel(new FlowLayout());
 
+        // Button to add a new task
         JButton addButton = new JButton("Add");
         addButton.setBackground(Color.GREEN);
         addButton.addActionListener(e -> addTask());
         controlPanel.add(addButton);
 
+        // Button to update an existing task
         JButton updateButton = new JButton("Update");
         updateButton.setBackground(Color.YELLOW);
         updateButton.addActionListener(e -> updateTask());
         controlPanel.add(updateButton);
 
+        // Button to delete a task
         JButton deleteButton = new JButton("Delete");
         deleteButton.setBackground(Color.RED);
         deleteButton.addActionListener(e -> deleteTask());
         controlPanel.add(deleteButton);
 
+        // Button to refresh the task list
         JButton refreshButton = new JButton("Refresh");
         refreshButton.setBackground(Color.CYAN);
         refreshButton.addActionListener(e -> refreshTasks());
         controlPanel.add(refreshButton);
 
+        // Button to export tasks of a specific date
         JButton exportButton = new JButton("Export by Date");
         exportButton.setBackground(Color.MAGENTA);
         exportButton.addActionListener(e -> exportTasksByDate());
         controlPanel.add(exportButton);
 
+        // Field to search tasks by description
         controlPanel.add(new JLabel("Search:"));
         searchField = new JTextField(10);
         searchField.addActionListener(e -> searchTasks());
@@ -100,18 +98,22 @@ public class TodoUI extends JFrame {
 
         add(controlPanel, BorderLayout.SOUTH);
 
+        // Load and display tasks initially
         refreshTasks();
         setVisible(true);
     }
 
+    // Method to add a new task
     private void addTask() {
         String desc = descriptionField.getText().trim();
         Category category = (Category) categoryComboBox.getSelectedItem();
         Date date = dateChooser.getDate();
+
         if (date == null) {
             JOptionPane.showMessageDialog(this, "Please select a date.");
             return;
         }
+
         LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
         if (!desc.isEmpty()) {
@@ -124,6 +126,7 @@ public class TodoUI extends JFrame {
         }
     }
 
+    // Method to update an existing task by ID
     private void updateTask() {
         String idStr = JOptionPane.showInputDialog(this, "Enter ID to update:");
         if (idStr == null) return;
@@ -134,10 +137,12 @@ public class TodoUI extends JFrame {
             Category category = (Category) categoryComboBox.getSelectedItem();
             boolean completed = completedCheckBox.isSelected();
             Date date = dateChooser.getDate();
+
             if (date == null) {
                 JOptionPane.showMessageDialog(this, "Please select a date.");
                 return;
             }
+
             LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
             taskManager.updateTask(id, desc, category, completed, localDate);
@@ -147,6 +152,7 @@ public class TodoUI extends JFrame {
         }
     }
 
+    // Method to delete a task by ID
     private void deleteTask() {
         String idStr = JOptionPane.showInputDialog(this, "Enter ID to delete:");
         if (idStr == null) return;
@@ -160,6 +166,7 @@ public class TodoUI extends JFrame {
         }
     }
 
+    // Method to refresh and display the current list of tasks
     private void refreshTasks() {
         List<Task> tasks = taskManager.getTasks();
         StringBuilder sb = new StringBuilder();
@@ -169,6 +176,7 @@ public class TodoUI extends JFrame {
         taskListArea.setText(sb.toString());
     }
 
+    // Method to search and filter tasks by description
     private void searchTasks() {
         String keyword = searchField.getText().trim().toLowerCase();
         List<Task> tasks = taskManager.getTasks();
@@ -181,13 +189,14 @@ public class TodoUI extends JFrame {
         taskListArea.setText(sb.toString());
     }
 
-    // Xuất file công việc của ngày được chọn
+    // Method to export tasks to a file for a specific selected date
     private void exportTasksByDate() {
         Date date = dateChooser.getDate();
         if (date == null) {
             JOptionPane.showMessageDialog(this, "Please select a date to export.");
             return;
         }
+
         LocalDate selectedDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         List<Task> tasks = taskManager.getTasks();
         StringBuilder sb = new StringBuilder();
@@ -211,4 +220,3 @@ public class TodoUI extends JFrame {
         }
     }
 }
-
