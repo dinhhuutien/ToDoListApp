@@ -11,7 +11,7 @@ package com.mycompany.todolistapp;
 
 
 /**
- * Enum dùng để phân loại các task.
+ * Enum is used to classify tasks.
  */
 public enum Category {
     PERSONAL, WORK, HOBBY, OTHER
