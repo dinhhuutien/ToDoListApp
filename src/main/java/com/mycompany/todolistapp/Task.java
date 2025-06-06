@@ -14,7 +14,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
- * Lớp Task mô tả 1 công việc.
+ * 
  */
 public class Task implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -23,7 +23,7 @@ public class Task implements Serializable {
     private String description;
     private Category category;
     private boolean isCompleted;
-    private LocalDate date;  // ngày tháng năm
+    private LocalDate date;  // 
 
     public Task(int id, String description, Category category) {
         this.id = id;
