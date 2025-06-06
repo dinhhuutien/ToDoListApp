@@ -11,13 +11,13 @@ package com.mycompany.todolistapp;
 
 
 /**
- * Lớp Main chính để khởi động ứng dụng UI (giao diện Swing).
+ * 
  */
 public class Main {
     public static void main(String[] args) {
-        // Tạo TaskManager
+        // create TaskManager
         TaskManager taskManager = new TaskManager();
-        // Tạo và khởi động TodoUI
+        // create and start TodoUI
         new TodoUI(taskManager);
     }
 }
